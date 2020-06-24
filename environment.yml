@@ -1,0 +1,14 @@
+name: stock-return-model-comparison
+dependencies:
+  - python=3.7
+  - numpy
+  - jupyter
+  - matplotlib
+  - scipy
+  - pandas
+  - deap
+  - pyyaml
+  - pip
+  - pip:
+    - sdeint
+    - pyswarms
