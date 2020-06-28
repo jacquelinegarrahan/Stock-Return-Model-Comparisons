@@ -26,7 +26,26 @@ PARAMETER_RANGES = {
 }
 
 
-def run_search(data, parameter_ranges, runtime, model, search="pso"):
+def run_search(
+    data: np.ndarray, parameter_ranges: dict, model: str, search: str = "pso"
+):
+    """
+    Launch search using PSO or Genetic search.
+
+    Parameters
+    ----------
+    data: np.ndarray
+        Empirical data
+
+    parameter_ranges: dict
+        Ranges to search over
+
+    model: str
+        Which model to run
+
+    search: str
+        Indicates what type of search to run
+    """
     X0 = data[0]
 
     if search == "pso":

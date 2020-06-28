@@ -1,14 +1,26 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import numpy.polynomial.hermite as herm
 import math
-import sdeint as sde
 from scipy.constants import pi
-import pandas as pd
 
 
-def gbm(S0, mu, sigma, N):
-    """Geometric Brownian motion trajectory generator"""
+def gbm(S0: float, mu: float, sigma: float, N: int) -> list:
+    """
+    Geometric Brownian motion trajectory generator
+
+    S0: float
+        starting value
+
+    mu: float
+        GMB mean
+
+    sigma: float
+        GBM variance
+
+    N: int
+        Number of steps to generate
+    
+    
+    """
     t = range(N)
     S = [S0]
     for i in range(1, N):
@@ -24,10 +36,27 @@ def gbm(S0, mu, sigma, N):
     return S
 
 
-def gbm_fp(x_range, t, mu, sigma):
-    """Fokker-Planck equation for gbm"""
+def gbm_fp(x_range: list, t: int, mu: float, sigma: float) -> list:
+    """
+    Generate pdf using Fokker-Planck equation for GBM.
+    
+    Parameters
+    ----------
+    x_range: 
+        Values of x to evaluate
+    
+    t: int
+        Time to evaluate
 
-    # PROBLEM HERE IS THAT THIS IS ONLY DEFINED FOR POSITIVE VVALUES
+    mu: float
+        GBM mean
+
+    sigma: float
+        GBM variance
+    
+    """
+
+    # PROBLEM HERE IS THAT THIS IS ONLY DEFINED FOR POSITIVE VALUES
     muhat = mu - 0.5 * sigma ** 2
     x0 = 0.1
     pdf = [0] * len(x_range)

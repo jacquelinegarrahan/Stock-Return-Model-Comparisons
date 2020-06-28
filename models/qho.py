@@ -1,13 +1,12 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import numpy.polynomial.hermite as herm
 import math
-import sdeint as sde
 from scipy.constants import pi
-import pandas as pd
 
 
-def qho_dist(n, xs, m=1, w=1, h_bar=1):
+def qho_dist(
+    n: int, xs: np.ndarray, m: int = 1, w: int = 1, h_bar: float = 1.0
+) -> tuple:
     """
     Returns the quantum harmonic oscillator wavefunction for energy level n.
 
@@ -55,7 +54,9 @@ def qho_dist(n, xs, m=1, w=1, h_bar=1):
     return xs, psi
 
 
-def qho_fp(x_range, c, mw, h_bar=1, n=5):
+def qho_fp(
+    x_range: np.ndarray, c: float, mw: float, h_bar: int = 1, n: int = 5
+) -> list:
     """
     Returns the quantum harmonic oscillator wavefunction for energy level n.
 

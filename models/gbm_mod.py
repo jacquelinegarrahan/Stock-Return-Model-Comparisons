@@ -1,14 +1,32 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import numpy.polynomial.hermite as herm
 import math
 import sdeint as sde
-from scipy.constants import pi
 import pandas as pd
 
 
-def gbm_mod(X0, sigma_1, sigma_2, alpha, mu_step, N):
-    """modified GBM with Ornstein-Uhlenbeck term"""
+def gbm_mod(
+    X0: float, sigma_1: float, sigma_2: float, alpha: float, mu_step: int, N: int
+) -> list:
+    """
+    Generates modified GBM with Ornstein-Uhlenbeck term
+
+    Parameters
+    ----------
+    X0: float
+
+    sigma_1: float
+
+    sigma_2: float
+
+    alpha: float
+
+    mu_step: int
+        Steps to evaluate moving mean
+
+    N: int
+        Number of steps to generate
+    
+    """
     # mu_step is the number of previous steps to include in the mean
     t = np.linspace(0, 1, N + 1)
     mus = [0]
