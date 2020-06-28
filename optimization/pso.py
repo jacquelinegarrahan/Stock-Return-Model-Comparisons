@@ -7,7 +7,21 @@ from models.gbm_mod import gbm_mod
 from models.qho import qho_fp
 
 
-def fit_gbm_mod(X0, N, particle):
+def fit_gbm_mod(X0: float, N: int, particle: list) -> list:
+    """
+    Fits the modified GBM with the additional Ornstein-Uhlenbeck term.
+
+    Parameters
+    ----------
+    X0: float
+        Starting position
+
+    N: int
+        Number of steps to generate
+
+    particle: list
+        Particle vector of values.
+    """
     alpha = particle[0]
     sigma_1 = particle[1]
     sigma_2 = particle[2]
@@ -22,7 +36,21 @@ def fit_gbm_mod(X0, N, particle):
         return model_trajectory
 
 
-def fit_gbm(X0, N, particle):
+def fit_gbm(X0: float, N: int, particle: list) -> list:
+    """
+    Fits the GBM model to the data.
+
+    Parameters
+    ----------
+    X0: float
+        Starting position
+
+    N: int
+        Number of steps to generate
+
+    particle: list
+        Particle vector of values.
+    """
     mu = particle[0]
     sigma = particle[1]
     model_trajectory = gbm(X0, mu, sigma, N)
@@ -34,7 +62,25 @@ def fit_gbm(X0, N, particle):
         return model_trajectory
 
 
-def fit_qho(X0, data, N, particle):
+def fit_qho(X0: float, data: np.ndarray, N: int, particle: list) -> list:
+    """
+    Fits the quantum harmonic oscillator using the fokker-planck \\
+    representation.
+    
+    Parameters
+    ----------
+    X0: float
+        Starting position
+
+    N: int
+        Number of steps to generate
+
+    particle: list
+        Particle vector of values.
+
+    data: np.ndarray
+        empirical data
+    """
     min_val = min(data)
     max_val = max(data)
     x_range = np.linspace(min_val, max_val)
@@ -42,6 +88,7 @@ def fit_qho(X0, data, N, particle):
     mw = particle[5]
     qho = qho_fp(x_range, C, mw)
     pdf = [1000 * i for i in qho]
+
     if len(qho) < len(x_range):
         return None
 
@@ -58,9 +105,23 @@ def fit_qho(X0, data, N, particle):
         return model_trajectory
 
 
-def error_calc(X0, model, data, particles):
+def error_calc(X0: float, model: str, data: np.ndarray, particles: list) -> np.ndarray:
     """
     Calculates the appropriate error for respective tests.
+
+    Parameters
+    ----------
+    X0: float
+        Starting position
+
+    model: str
+        String indicating model to fit.
+
+    particles:
+        Particle vectors of values.
+
+    data: np.ndarray
+        empirical data
     
     
     """
@@ -86,11 +147,22 @@ def error_calc(X0, model, data, particles):
     return errors
 
 
-def cramer_von_mises(empirical, model_fit):
-    """Uses the Cramér-von Mises goodness of fit statistic"""
+def cramer_von_mises(empirical: np.ndarray, model_fit: list) -> float:
+    """
+    Calculates the Cramér-von Mises goodness of fit statistic
+
+    Parameters
+    ---------
+    empirical: np.ndarray
+        Empirical data
+
+    model_fit: np.ndarray
+        Data generated from model fit
+    
+    """
 
     if not model_fit:
-        return 10000000
+        return 10000000  # arbitrary large #
 
     else:
 
@@ -110,12 +182,16 @@ def cramer_von_mises(empirical, model_fit):
             T += (num_less / len(empirical) - (j - 0.5) / M) ** 2
 
         if T == "inf":
-            return 1000000
+            return 10000000  # arbitrary large #
         else:
             return T
 
 
-def test_stat(empirical, model_fit):
+def test_stat(empirical: np.ndarray, model_fit: list) -> float:
+    """
+    Arbitrary test fit based on mean and variance.
+
+    """
     if isinstance(model_fit, (list,)) and not any([val == None for val in model_fit]):
         model_fit = np.array(model_fit)
         var_dif = abs(empirical.var() - model_fit.var())
